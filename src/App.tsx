@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useEffect} from 'react';
+import './App.css';
+import {PrivateRoute, PublicRoute} from "./HOCs/Routes";
+import {useAppDispatch, useAppSelector} from "./utils/hook";
+import {fetchCurrentUser} from "./redux/auth/authOperations";
+import {Route, Routes} from "react-router-dom";
+import RecipesPage from "./pages/RecipesPage";
+import AppBar from "./components/AppBar/AppBar";
+import SavedRecipesPage from "./pages/SavedRecipesPage";
+import CookingModePage from "./pages/CookingModePage";
+import LoginPage from "./pages/LoginPage";
+import {Loading} from "./components/Loading/Loading";
+import RegisterPage from "./pages/RegisterPage";
+
+// Пример с центрированием по горизонтали и вертикали
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(fetchCurrentUser());
+    }, [dispatch]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const {isLoading, isFetching} = useAppSelector(state => state.auth);
+
+
+    const isAuth = useAppSelector((state) => state.auth.isAuth);
+
+
+    return (<>
+            {(isLoading || isFetching) ? <Loading/> : null}
+            <AppBar/>
+            <Routes>
+                <Route index path="/" element={<PrivateRoute><RecipesPage/></PrivateRoute>}/>
+                <Route path="/saved-recipes" element={<PrivateRoute><SavedRecipesPage/></PrivateRoute>}/>
+                <Route path="/cooking-mode/:recipeId" element={<PrivateRoute><CookingModePage/></PrivateRoute>}/>
+
+                <Route path="/login" element={<PublicRoute><LoginPage/></PublicRoute>}/>
+                <Route path="/register" element={<PublicRoute><RegisterPage/></PublicRoute>}/>
+
+            </Routes>
+        </>
+    );
+
 }
 
-export default App
+export default App;
