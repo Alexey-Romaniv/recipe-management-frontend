@@ -8,14 +8,14 @@ import {
     logout,
     fetchCurrentUser, getSavedRecipes, addSavedRecipes, removeSavedRecipe,
 } from "./authOperations";
-import {Recipe} from "../../types/userTypes";
+import {Recipe, RejectValue} from "../../types/userTypes";
 
 export type AuthState = {
     id: string,
     email: string,
     token: string,
     isLoading: boolean,
-    error:  string,
+    error:  RejectValue | undefined,
     isFetching: boolean,
     isAuth: boolean,
     savedRecipes: Recipe[],
@@ -26,7 +26,7 @@ const initialState: AuthState = {
     email: "",
     token: '',
     isLoading: false,
-    error: '',
+    error: undefined,
     isFetching: false,
     isAuth: false,
     savedRecipes: []
@@ -56,15 +56,15 @@ const authSlice = createSlice({
         builder
             .addCase(registration.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(login.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(logout.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(registration.fulfilled, (state, { payload }) => {
                 state.email = payload.email;
@@ -78,13 +78,12 @@ const authSlice = createSlice({
                 state.email = action.payload.email;
                 state.token = action.payload.token;
                 state.id = action.payload.id;
-                // state.savedRecipes = action.payload.savedRecipes;
                 state.isAuth = true;
 
                 state.isLoading = false;
             })
             .addCase(logout.fulfilled, (state) => {
-                // state.token = "";
+                state.token = "";
                 state.isAuth = false;
                 state.isLoading = false;
                 state.email = '';
@@ -92,7 +91,7 @@ const authSlice = createSlice({
             .addCase(fetchCurrentUser.pending, (state) => {
                 state.isFetching = true;
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
                 state.email = payload.email;
@@ -104,18 +103,18 @@ const authSlice = createSlice({
                 state.isFetching = false;
             })
             .addCase(fetchCurrentUser.rejected, (state, action) => {
-                state.error = action.payload || '';
+                state.error = action.payload;
                 state.isFetching = false;
                 state.isAuth = false;
                 state.isLoading = false;
             })
             .addCase(getSavedRecipes.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
                 console.log("Loading")
             })
             .addCase(getSavedRecipes.rejected, (state, action) => {
-                    state.error = action.payload || 'Server error';
+                    state.error = action.payload;
                     state.isLoading = false;
                 })
             .addCase(getSavedRecipes.fulfilled, (state, action) => {
@@ -126,10 +125,10 @@ const authSlice = createSlice({
             })
             .addCase(addSavedRecipes.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(addSavedRecipes.rejected, (state, action) => {
-                state.error = action.payload || 'Server error';
+                state.error = action.payload;
                 state.isLoading = false;
             })
             .addCase(addSavedRecipes.fulfilled, (state, action) => {
@@ -137,10 +136,10 @@ const authSlice = createSlice({
                 state.isLoading = false;
             }).addCase(removeSavedRecipe.pending, (state) => {
                 state.isLoading = true;
-                state.error = '';
+                state.error = undefined;
             })
             .addCase(removeSavedRecipe.rejected, (state, action) => {
-                state.error = action.payload || 'Server error';
+                state.error = action.payload;
                 state.isLoading = false;
             })
             .addCase(removeSavedRecipe.fulfilled, (state, action) => {
