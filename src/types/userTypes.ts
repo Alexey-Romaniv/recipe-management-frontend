@@ -31,5 +31,5 @@ export type Recipe = {
 export type RecipeState = {
     recipes: Recipe[],
     isLoading: boolean,
-    error: string | null,
+    error: {message: string} | undefined,
 }
