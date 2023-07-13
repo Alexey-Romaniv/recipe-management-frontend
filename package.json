@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -25,6 +25,7 @@
     "react-router-dom": "^6.13.0",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.0.0-rc.3",
+    "yarn": "^1.22.19",
     "yup": "^1.2.0"
   },
   "devDependencies": {
