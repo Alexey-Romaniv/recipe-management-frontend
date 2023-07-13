@@ -19,7 +19,6 @@ const RegistrationForm = () => {
 
     const dispatch = useAppDispatch()
     const handleSubmit = async (values : SignRequest) => {
-        console.log(values); // Действия при отправке формы, например, вызов функции регистрации
         await dispatch(registration(values));
     };
 

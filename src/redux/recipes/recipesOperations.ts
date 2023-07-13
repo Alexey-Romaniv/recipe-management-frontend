@@ -21,7 +21,6 @@ export const createRecipe = createAsyncThunk<Recipe, Omit<Recipe, "_id">, {rejec
     async (transactionData, {rejectWithValue, getState})=>{
         try {
             const userId = getState().auth.id;
-            console.log(transactionData)
             const {data} = await axios.post(`/recipes/create/${userId}`, transactionData);
 
             return data;

@@ -45,7 +45,6 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ open, onClose }) => {
 
 
     const handleSubmit = async (values: Omit<Recipe, "_id">) => {
-        console.log(values);
         await dispatch(createRecipe(values));
         onClose();
     };

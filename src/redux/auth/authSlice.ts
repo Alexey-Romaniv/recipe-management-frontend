@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -82,6 +82,12 @@ const authSlice = createSlice({
 
                 state.isLoading = false;
             })
+            .addCase(login.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isFetching = false;
+            state.isAuth = false;
+            state.isLoading = false;
+        })
             .addCase(logout.fulfilled, (state) => {
                 state.token = "";
                 state.isAuth = false;
@@ -111,7 +117,6 @@ const authSlice = createSlice({
             .addCase(getSavedRecipes.pending, (state) => {
                 state.isLoading = true;
                 state.error = undefined;
-                console.log("Loading")
             })
             .addCase(getSavedRecipes.rejected, (state, action) => {
                     state.error = action.payload;
@@ -119,8 +124,6 @@ const authSlice = createSlice({
                 })
             .addCase(getSavedRecipes.fulfilled, (state, action) => {
                 state.savedRecipes = action.payload;
-                console.log(action.payload);
-                console.log("Work!")
                 state.isLoading = false;
             })
             .addCase(addSavedRecipes.pending, (state) => {

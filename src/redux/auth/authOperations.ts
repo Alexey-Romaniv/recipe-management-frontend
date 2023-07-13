@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthState} from './authSlice';
 import {SignRequest, SignResponse, Recipe, RejectValue} from "../../types/userTypes";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://recipe-backend-h6sf.onrender.com";
 
 const token = {
     set(token: string) {
@@ -19,7 +19,6 @@ export const registration = createAsyncThunk<Omit<SignResponse, "savedRecipes">,
     async (userData, { rejectWithValue }) => {
         try {
             const { data } = await axios.post("/users/register", userData);
-            console.log(data)
             token.set(data.token);
             return data;
         } catch (e: any) {
@@ -33,7 +32,6 @@ export const login = createAsyncThunk<SignResponse, SignRequest, {rejectValue: R
     async (userData, { rejectWithValue }) => {
         try {
             const { data } = await axios.post("/users/login", userData);
-            console.log(data.token)
             token.set(data.token);
             return data;
         } catch (e: any) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button } from '@mui/material';
 import {SignRequest} from "../../types/userTypes";
@@ -18,9 +18,10 @@ const LoginForm = () => {
     });
 
     const dispatch = useAppDispatch()
-    const handleSubmit = async (values : SignRequest) => {
-        console.log(values); // Действия при отправке формы, например, вызов функции регистрации
+    const handleSubmit = async (values : SignRequest, {resetForm} : FormikHelpers<SignRequest>) => {
         await dispatch(login(values));
+        resetForm();
+
     };
 
     return (
