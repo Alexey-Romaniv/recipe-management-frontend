@@ -67,7 +67,7 @@ export default function RegisterPage() {
                             Sign-In
                         </Typography>
                         <LoginForm/>
-                        <NavLink to="/login">Don't have an account? Sign-up</NavLink>
+                        <NavLink to="/register">Don't have an account? Sign-up</NavLink>
                     </Box>
                 </Grid>
             </Grid>
